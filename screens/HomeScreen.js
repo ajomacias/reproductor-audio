@@ -1,24 +1,14 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import { View,FlatList, Text, StyleSheet,Image, SafeAreaView, Alert } from 'react-native';
 import { PermissionContext } from '../contexts/';
 import { ItemListMusic } from "../components";
 
-export class HomeScreen extends React.Component {
+export const HomeScreen = ()=> {
 
-    constructor(props){
-        super(props)
-    }
-
-    static contextType = PermissionContext;
-   
-    render(){
-
-        
-
-        let { musics } = this.context;
+        const { musics } = useContext(PermissionContext);
 
         return(
-            <View style={this.styles.container}>
+            <View style={styles.container}>
             <SafeAreaView>
 
                     <FlatList
@@ -30,22 +20,22 @@ export class HomeScreen extends React.Component {
             </SafeAreaView>
             </View>
         )
-    }
 
-    styles = StyleSheet.create({
-        textHome : {
-            color : 'white'
-        },
-        container : {
-            width : '100%',
-            height : '100%',
-            backgroundColor : 'black',
-            display : 'flex',
-            justifyContent : 'center',  
-            alignItems : 'center',
-            flexWrap : 'wrap',
-        }
-        
-    })
     
 }
+
+const styles = StyleSheet.create({
+    textHome : {
+        color : 'white'
+    },
+    container : {
+        width : '100%',
+        height : '100%',
+        backgroundColor : 'black',
+        display : 'flex',
+        justifyContent : 'center',  
+        alignItems : 'center',
+        flexWrap : 'wrap',
+    }
+    
+})

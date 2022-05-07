@@ -1,31 +1,27 @@
 import { Image, View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { ReproductorContext } from "../contexts";
-import { Component } from "react";
-import { AntDesign, Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native"
+import { useContext } from "react";
+import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-class ReproductorInferior extends Component {
-  constructor(props) {
-    super(props);
+const ReproductorInferior = ({children})=>{
 
-  }
+  const  { music }  = useContext(ReproductorContext);
 
-  static contextType = ReproductorContext;
+  //const navigation = useNavigation();
 
-  async handlePressPlay(music) {
+  const handlePressPlay = async()=>{
     let status = await music.getStatusAsync();
 
     if (status.shouldPlay) await music.pauseAsync();
     else await music.playAsync();
   }
-
-  render() {
-    const { music } = this.context;
+  
 
     return (
       
       <>
-        {this.props.children}
+        {children}
         <View style={styles.container}>
           <TouchableOpacity
             disabled={music ? false : true}
@@ -35,7 +31,7 @@ class ReproductorInferior extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             disabled={music ? false : true}
-            onPress={async () => await this.handlePressPlay(music)}
+            onPress={async () =>await handlePressPlay(music)}
           >
             <Entypo style={styles.icons} name="controller-play" />
           </TouchableOpacity>
@@ -55,7 +51,7 @@ class ReproductorInferior extends Component {
         </View>
       </>
     );
-  }
+  
 }
 
 const styles = StyleSheet.create({

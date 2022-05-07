@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import * as Screens from "./screens/index";
-import { Content, ReproductorInferior } from "./components";
+import {  ReproductorInferior } from "./components";
 import React from "react";
 import { stackNavigateOptions } from "./options/AllOptions";
 
@@ -17,7 +17,7 @@ const Router = () =>{
            <Stack.Navigator 
             initialRouteName="Home" >
                 
-               <Stack.Screen options={stackNavigateOptions} name="Home" component={ Content } />
+               <Stack.Screen options={stackNavigateOptions} name="Home" component={ Screens.HomeScreen } />
                <Stack.Screen name="Reproductor" component={Screens.ReproductorScreen} />
                
            </Stack.Navigator>

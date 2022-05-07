@@ -1,24 +1,14 @@
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import React from "react";
+import { useContext } from "react";
 import { ReproductorContext } from "../contexts"
 
-class ItemListMusic extends React.Component {
+const ItemListMusic = ({item})=> {
 
-    constructor(props){
-        super(props)
-    }
-
-    static contextType = ReproductorContext;
-    
-   render(){
-    
-    const {item} = this.props;
+    const { setMusic } = useContext(ReproductorContext);
 
     const size = item.filename.length;
 
     let title = size > 30 ? item.filename.slice(0, 50).trim() + "..." : item.filename;
-
-    let { setMusic } = this.context;
 
     return (
             <View style={styles.containerItemList}>
@@ -39,7 +29,7 @@ class ItemListMusic extends React.Component {
             </View>
 
     ) 
-}
+
 }
 
 const styles = StyleSheet.create({

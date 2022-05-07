@@ -4,76 +4,69 @@ import { Alert } from "react-native";
  
 const PermissionContext = createContext();
 
-class PermissionProvider extends Component {
+const PermissionProvider = ({children})=> {
  
-  constructor(props) {
-    super(props);
-    this.state = {
-        musics : []
-    }
-  }
-
-  componentDidMount() {
-    this.getPermission();
-  }
+  const [musics, setMusics] = useState([]);
 
 
-  getPermissionAlert = () =>{
+  const getPermissionAlert = () =>{
       Alert.alert("Permisos requeridos","Esta app necesita permisos",
       [
           {
               text: "ok",
-              onPress : ()=>this.getPermission()
+              onPress : ()=>getPermission()
           },
           {
               text : "cancel",
-              onPress : ()=> this.getPermissionAlert()
+              onPress : ()=> getPermissionAlert()
           }
           
 
       ])
   }
 
-  getPermission = async()=>{
+  const getPermission = async()=>{
       let permission =  await MediaLibrery.getPermissionsAsync();
 
       if(permission.granted){
         const music =   await MediaLibrery.getAssetsAsync ({
             mediaType : 'audio'
         })
-       this.setState({ musics : music })
+       setMusics(music);
+       
       }
 
       if(!permission.granted && permission.canAskAgain){
           
           const { status, canAskAgain } = await MediaLibrery.requestPermissionsAsync();
 
-          if(status === 'granted' ){
-            this.setState( {musics : await MediaLibrery.getAssetsAsync({ mediaType : 'audio' })}) 
-          }
-          if(!status && canAskAgain ) {
-              this.getPermissionAlert();
-          }
-          if(status === 'denied' && !canAskAgain ){
-              Alert.alert("err","Debe dar permisos a la apLicacion")
-          }
+          if(status === 'granted' )
+            setMusics(await MediaLibrery.getAssetsAsync({ mediaType : "audio" }))
+          
+          if(!status && canAskAgain ) getPermissionAlert();
+          
+          if(status === 'denied' && !canAskAgain ) Alert.alert("err","Debe dar permisos a la apLicacion")
           
       }
 
   }
 
-  render() {
+  useEffect(()=>{
+    (async()=>await getPermission())();
+  },[])
+
+
     return (
       <PermissionContext.Provider
       value={{
-          getPermission : this.getPermission,
-          musics : this.state.musics
+          getPermission,
+          musics : musics
       }}
       >
-        {this.props.children}
+        {children}
       </PermissionContext.Provider>
     );
-  }
+  
 }
 
 
